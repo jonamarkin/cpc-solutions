@@ -1,13 +1,3 @@
-use std::env::current_exe;
-
-fn main() {
-    println!("Hello, world!");
-    let array = [-1, 5, 8, -9, 4, 1];
-
-    let max_sub = kandane_maxsubarray(&array);
-    println!("The max is: {}", max_sub);
-}
-
 /**
  * max_subarray_bruteforce
  * Brute force approach
