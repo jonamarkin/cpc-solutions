@@ -13,6 +13,9 @@ fn get_leaders(array: &[i32]) -> Vec<i32> {
     //Initialize vector to hold leaders
     let mut v = Vec::with_capacity(array.len());
 
+    //Iterate the array from the right to the left
+    //Since a leader will have to be greater than all elements to its right
+    //We don't want to traverse all the elements to the right of every element and compare
     for i in array.iter().rev() {
         //Check if current element is greater than max
         if i >= &max {

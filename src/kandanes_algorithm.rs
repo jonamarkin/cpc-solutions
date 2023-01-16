@@ -30,3 +30,20 @@ fn kandane_maxsubarray(nums: &[i32]) -> i32 {
 
     max_subarray
 }
+
+fn kandane_maxsubarray_soln(nums: &[i32]) -> i32 {
+    let mut current_sum = 0;
+    let mut max_subarray = i32::MIN;
+
+    for i in nums.iter() {
+        if current_sum > 0 {
+            current_sum += *i;
+        } else {
+            current_num = *i;
+        }
+
+        if current_sum > max_subarray {
+            max_subarray = current_sum;
+        }
+    }
+}
