@@ -1,19 +1,7 @@
-use std::collections::{BTreeMap, BinaryHeap, HashSet, VecDeque};
-
-fn main() {
-    println!("Hello, world!");
-    let array = [8, 3, -1, -3, 5, 3, 6, 7];
-
-    let aa = vec![1, 3, -1, -3, 5, 3, 6, 7];
-
-    //println!("{}", sliding_window_maximum_brute_force(aa, 3));
-    println!("{:?}", next_greater_elements(&array));
-}
-
 //Create an array that contains a concatenation of the provided array twice
 //This way, we can loop in a circular way
 //Uses time on O(n^2) and time of O(n) as well
-fn next_greater_elements(nums: &[i32]) -> Vec<i32> {
+fn next_greater_elements_brute_force(nums: &[i32]) -> Vec<i32> {
     // Create a vector to store the result with the same length as the input vector, filled with -1
     let mut res = vec![-1; nums.len()];
     // Create a new vector that is a concatenation of the input vector twice
