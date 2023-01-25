@@ -75,3 +75,43 @@ pub fn max_sliding_window_deque(nums: &[i32], k: usize) -> Vec<i32> {
     }
     output
 }
+
+//BST Approach
+// The BTreeMap is implemented as a balanced binary search tree, which allows for efficient insertion, deletion and searching of elements.
+// This approach maintains the sliding window by removing the element that is no longer in the window and adding the new element that just entered the window.
+// This guarantees that the size of the map is always equal to k.
+// The time complexity of this approach is O(n log k) because each element is inserted and removed from
+
+fn max_sliding_window_bst(nums: &[i32], k: usize) -> Vec<i32> {
+    // Edge cases check: if length of nums is 0 or k is 0 or 1 return empty vec
+    let n = nums.len();
+    if n * k == 0 {
+        return vec![];
+    }
+    if k == 1 {
+        return nums.to_vec();
+    }
+
+    // Initialize a BTreeMap to keep track of the elements in the sliding window
+    let mut bst = BTreeMap::new();
+    // Initialize an empty output vector
+    let mut output = vec![];
+    // Iterate through the elements of the nums vector
+    for i in 0..n {
+        // add current element to the bst by incrementing its count
+        *bst.entry(nums[i]).or_insert(0) += 1;
+        // if bst size is greater than k, remove the element at i-k
+        if i >= k {
+            if *bst.get(&nums[i - k]).unwrap() == 1 {
+                bst.remove(&nums[i - k]);
+            } else {
+                *bst.get_mut(&nums[i - k]).unwrap() -= 1;
+            }
+        }
+        // if the bst size is equal to k, add the max element to the output
+        if i >= k - 1 {
+            output.push(*bst.iter().rev().next().unwrap().0);
+        }
+    }
+    output
+}

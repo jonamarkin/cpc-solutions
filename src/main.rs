@@ -1,4 +1,4 @@
-use std::collections::{HashSet, VecDeque};
+use std::collections::{BTreeMap, BinaryHeap, HashSet, VecDeque};
 
 fn main() {
     println!("Hello, world!");
@@ -7,10 +7,10 @@ fn main() {
     let aa = vec![1, 3, -1, -3, 5, 3, 6, 7];
 
     //println!("{}", sliding_window_maximum_brute_force(aa, 3));
-    println!("{:?}", max_sliding_window(&array, 3));
+    println!("{:?}", max_sliding_window_bst(&array, 3));
 }
 
-pub fn max_sliding_window(nums: &[i32], k: usize) -> Vec<i32> {
+fn max_sliding_window_bst(nums: &[i32], k: usize) -> Vec<i32> {
     // Edge cases check: if length of nums is 0 or k is 0 or 1 return empty vec
     let n = nums.len();
     if n * k == 0 {
@@ -20,27 +20,26 @@ pub fn max_sliding_window(nums: &[i32], k: usize) -> Vec<i32> {
         return nums.to_vec();
     }
 
-    // Initialize deque with first k elements indexes
-    let mut deq: Vec<usize> = (0..k).collect();
-    // Find the index of the max element in the first k elements
-    let mut max_idx = (0..k).max_by(|&i, &j| nums[i].cmp(&nums[j])).unwrap();
-    // Initialize the output with the max element in the first k elements
-    let mut output = vec![nums[max_idx]];
-
-    // Iterate through the nums vector starting from the k-th element
-    for i in k..n {
-        //Remove the first element from the deque if it's not in the current sliding window
-        if deq[0] == i - k {
-            deq.remove(0);
+    // Initialize a BTreeMap to keep track of the elements in the sliding window
+    let mut bst = BTreeMap::new();
+    // Initialize an empty output vector
+    let mut output = vec![];
+    // Iterate through the elements of the nums vector
+    for i in 0..n {
+        // add current element to the bst by incrementing its count
+        *bst.entry(nums[i]).or_insert(0) += 1;
+        // if bst size is greater than k, remove the element at i-k
+        if i >= k {
+            if *bst.get(&nums[i - k]).unwrap() == 1 {
+                bst.remove(&nums[i - k]);
+            } else {
+                *bst.get_mut(&nums[i - k]).unwrap() -= 1;
+            }
         }
-        //Remove elements from deque that are smaller than current element
-        while !deq.is_empty() && nums[i] > nums[*deq.last().unwrap()] {
-            deq.pop();
+        // if the bst size is equal to k, add the max element to the output
+        if i >= k - 1 {
+            output.push(*bst.iter().rev().next().unwrap().0);
         }
-        // Add current element to the deque
-        deq.push(i);
-        // Add the max element of the current sliding window to the output
-        output.push(nums[deq[0]]);
     }
     output
 }
