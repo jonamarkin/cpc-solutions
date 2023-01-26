@@ -89,9 +89,47 @@ pub fn merge_sort_and_count(nums: &mut Vec<i32>, left: usize, right: usize) -> i
         count += merge_and_count(nums, left, middle, right);
     }
 
+    //Perform linear scan for local inversions
+
     return count;
+}
+
+//Function to find the local inversions and global inversions and compare
+pub fn ideal_permutations_merge_sort(nums: &mut Vec<i32>) -> bool {
+    let mut local_inversions = 0;
+    let end = nums.len() - 1;
+    let global_inversions = merge_sort_and_count(nums, 0, end);
+    for i in 0..nums.len() - 1 {
+        if nums[i] > nums[i + 1] {
+            local_inversions += 1;
+        }
+    }
+    return local_inversions == global_inversions;
 }
 
 // Time Complexity: O(n * log n),
 // The algorithm used is divide and conquer i.e. merge sort whose complexity is O(n log n).
 // Auxiliary Space: O(n), Temporary array.
+
+//Remember Minimum Approach
+// Intuition
+
+// In performing a brute force, we repeatedly want to check whether there is some j >= i+2 for which A[i] > A[j].
+// This is the same as checking for A[i] > min(A[i+2:]).
+// If we knew these minimums min(A[0:]), min(A[1:]), min(A[2:]), ... we could make this check quickly.
+
+// Algorithm
+// Let's iterate through A from right to left, remembering the minimum value we've seen.
+// If we remembered the minimum floor = min(A[i:]) and A[i-2] > floor, then we should return False.
+// This search is exhaustive, so if we don't find anything after iterating through A, we should return True.
+pub fn is_ideal_permutation(A: &[i32]) -> bool {
+    let N = A.len();
+    let mut floor = N;
+    for i in (2..N).rev() {
+        floor = std::cmp::min(floor, A[i].try_into().unwrap());
+        if A[i - 2] > floor.try_into().unwrap() {
+            return false;
+        }
+    }
+    true
+}
