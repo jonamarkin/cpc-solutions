@@ -4,27 +4,6 @@ use std::{
 };
 
 fn main() {
-    //println!("Hello, world!");
-    // let array = [1, 0, 2];
-
-    // let aa = vec![1, 20, 6, 4, 5];
-
-    //println!("{}", sliding_window_maximum_brute_force(aa, 3));
-    //println!("{:?}", towers_hashmap_approach(&array));
-
-    //println!("{}", is_ideal_permutation(&array))
-
-    // let mut nums = vec![1, 2, 0];
-    // let result = ideal_permutations_merge_sort(&mut nums);
-    // println!("Is ideal permutation: {:?}", result);
-
-    // let mut arr = vec![1, 20, 6, 4, 5];
-    // let end = arr.len() - 1;
-
-    //Maximum limit
-
-    //const N: usize = (1e5 + 9) as usize;
-
     let mut n: usize = 0;
     let mut s_double = std::collections::BTreeSet::new();
     let mut sum = [0, 0];
@@ -33,9 +12,6 @@ fn main() {
         std::collections::BTreeSet::new(),
     ];
     let mut cnt_double = [0, 0];
-
-    // 0: 0 -> 1
-    // 1: 1 -> 0
 
     let mut sc = std::io::stdin();
     let mut buffer = String::new();
