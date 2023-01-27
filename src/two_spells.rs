@@ -1,29 +1,29 @@
-use std::{
-    collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque},
-    io::{self, stdin, BufRead, Read},
-};
+use std::collections::BTreeSet;
 
 fn main() {
     let mut n: usize = 0;
-    let mut s_double = std::collections::BTreeSet::new();
-    let mut sum = [0, 0];
-    let mut s = [
+    let mut s_double: BTreeSet<i64> = std::collections::BTreeSet::new();
+    let mut sum: [i64; 2] = [0, 0];
+    let mut s: [BTreeSet<i64>; 2] = [
         std::collections::BTreeSet::new(),
         std::collections::BTreeSet::new(),
     ];
-    let mut cnt_double = [0, 0];
+    let mut cnt_double: [i64; 2] = [0, 0];
+
+    // 0: 0 -> 1
+    // 1: 1 -> 0
 
     let mut sc = std::io::stdin();
     let mut buffer = String::new();
     sc.read_line(&mut buffer).unwrap();
-    let n: usize = buffer.trim().parse().unwrap();
+    n = buffer.trim().parse().unwrap();
 
     for _ in 0..n {
         buffer.clear();
         sc.read_line(&mut buffer).unwrap();
         let mut tokens = buffer.trim().split_whitespace();
-        let tp: i32 = tokens.next().unwrap().parse().unwrap();
-        let x: i32 = tokens.next().unwrap().parse().unwrap();
+        let tp: i64 = tokens.next().unwrap().parse().unwrap();
+        let x: i64 = tokens.next().unwrap().parse().unwrap();
 
         if x > 0 {
             sum[0] += x;
@@ -51,10 +51,10 @@ fn main() {
         }
 
         let sum_double = cnt_double[0] + cnt_double[1];
-        while s[1].len() < sum_double.try_into().unwrap() {
+        while s[1].len() < sum_double as usize {
             upd(0, &mut sum, &mut s, &mut s_double, &mut cnt_double);
         }
-        while s[1].len() > sum_double.try_into().unwrap() {
+        while s[1].len() > sum_double as usize {
             upd(1, &mut sum, &mut s, &mut s_double, &mut cnt_double);
         }
         while s[1].len() > 0
@@ -64,7 +64,7 @@ fn main() {
             upd(0, &mut sum, &mut s, &mut s_double, &mut cnt_double);
             upd(1, &mut sum, &mut s, &mut s_double, &mut cnt_double);
         }
-        assert!(s[1].len() == sum_double.try_into().unwrap());
+        assert!(s[1].len() == sum_double as usize);
 
         let mut res = sum[0] + sum[1] * 2;
         if cnt_double[1] == sum_double && sum_double > 0 {
@@ -79,14 +79,14 @@ fn main() {
 
 fn upd(
     id: usize,
-    sum: &mut [i32; 2],
-    s: &mut [BTreeSet<i32>; 2],
-    s_double: &mut BTreeSet<i32>,
-    cnt_double: &mut [i32; 2],
+    sum: &mut [i64; 2],
+    s: &mut [BTreeSet<i64>; 2],
+    s_double: &mut BTreeSet<i64>,
+    cnt_double: &mut [i64; 2],
 ) {
     assert!(s[id].len() > 0);
-    let x = *s[id].iter().next_back().unwrap();
-    let x = if id == 1 {
+    let mut x = *s[id].iter().next_back().unwrap();
+    x = if id == 1 {
         *s[id].iter().next().unwrap()
     } else {
         x
