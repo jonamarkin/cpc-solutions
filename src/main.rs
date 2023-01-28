@@ -1,57 +1,45 @@
-use std::collections::HashMap;
-use std::io;
+use std::io::{self, Read};
 
 fn main() {
-    longest_k_good_segment();
-}
-
-pub fn longest_k_good_segment() -> (usize, usize) {
     let mut input = String::new();
-    io::stdin().read_line(&mut input).unwrap();
-    let n_k: Vec<usize> = input
-        .trim()
-        .split_whitespace()
-        .map(|x| x.parse().unwrap())
-        .collect();
-    let n = n_k[0];
-    let k = n_k[1];
+    io::stdin().read_to_string(&mut input).unwrap();
+    let mut iter = input.split_whitespace();
 
-    let mut input = String::new();
-    io::stdin().read_line(&mut input).unwrap();
-    let a: Vec<i32> = input
-        .trim()
-        .split_whitespace()
-        .map(|x| x.parse().unwrap())
-        .collect();
-
-    let mut left = 0;
-    let mut right = 0;
-    let mut window = HashMap::new();
-    let mut max_length = 0;
-    let mut max_left = 0;
-    let mut max_right = 0;
-
-    while right < n {
-        window.entry(a[right]).and_modify(|e| *e += 1).or_insert(1);
-        while window.len() > k {
-            let count = window.get_mut(&a[left]).unwrap();
-            if *count == 1 {
-                window.remove(&a[left]);
-            } else {
-                *count -= 1;
-            }
-            left += 1;
-        }
-
-        let length = right - left + 1;
-        if length > max_length {
-            max_length = length;
-            max_left = left;
-            max_right = right;
-        }
-        right += 1;
+    let n: i32 = iter.next().unwrap().parse().unwrap();
+    let mut a = Vec::new();
+    let mut sum = 0;
+    for _ in 0..n {
+        let x: i32 = iter.next().unwrap().parse().unwrap();
+        a.push(x);
+        sum += x;
     }
 
-    println!("{} {}", max_left + 1, max_right + 1);
-    (max_left + 1, max_right + 1)
+    if sum % 3 != 0 {
+        println!("0");
+        return;
+    }
+
+    let sum = sum / 3;
+    let mut dp = vec![0; n as usize];
+    let mut suf = 0;
+    for i in (0..n).rev() {
+        suf += a[i as usize];
+        if i < n - 1 {
+            dp[i as usize] = dp[i as usize + 1];
+        }
+        if suf == sum {
+            dp[i as usize] += 1;
+        }
+    }
+
+    let mut ans = 0;
+    let mut pre = 0;
+    for i in 0..n - 2 {
+        pre += a[i as usize];
+        if pre == sum {
+            ans += dp[i as usize + 2];
+        }
+    }
+
+    println!("{}", ans);
 }
