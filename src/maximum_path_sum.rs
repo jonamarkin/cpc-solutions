@@ -7,7 +7,7 @@
 // The max_path_sum function takes a reference to the root node of a binary tree and returns the maximum path sum between two leaf nodes.
 // It uses a helper function find_max to find the maximum path sum.
 // It also uses a mutable variable maxi to keep track of the maximum path sum between two leaf nodes seen so far.
-// The find_max function takes a reference to the current node and a mutable reference to maxi.
+// The find_max function takes a reference to the current node and a mutable reference to max.
 // It first checks if the current node is a leaf node and returns the data if it is.
 // Otherwise, it recursively calls find_max on the left and right children of the current node.
 // It then updates the maxi variable if the current node is not a leaf node and its left and right children are not None.
