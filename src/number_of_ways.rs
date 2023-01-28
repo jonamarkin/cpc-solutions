@@ -1,6 +1,7 @@
 //Number of Ways
 //Question Link: https://codeforces.com/problemset/problem/466/C?locale=en
 //Rationale behind the code
+//Prefix Sum Approach
 // It starts by reading the input, which is the number of elements in the array and the elements themselves.
 // Then it checks if the sum of the elements is divisible by 3, if not it prints 0 and exits.
 
