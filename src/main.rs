@@ -1,32 +1,31 @@
-fn main() {
-    let text1: String = "abc".to_owned();
-    let text2: String = "def".to_owned();
+use std::cmp::min;
 
-    println!("{}", longest_common_subsequence(text1, text2));
-}
+// Function to calculate the minimum number of jumps
+// to reach the end of the array
+fn min_jumps(arr: &[i32]) -> i32 {
+    let n = arr.len();
+    let mut jumps = vec![std::i32::MAX; n]; // Vector to store minimum number of jumps
 
-// Dynamic programming approach
-pub fn longest_common_subsequence(text1: String, text2: String) -> i32 {
-    // Create a 2D grid called "dp_grid" with `text1.len() + 1` rows and `text2.len() + 1` columns.
-    let mut dp_grid = vec![vec![0; text2.len() + 1]; text1.len() + 1];
+    jumps[0] = 0; // Initialize the minimum number of jumps to reach the first element as 0
 
-    // Loop through each column in "text2", starting from the last one.
-    for col in (0..text2.len()).rev() {
-        // Loop through each row in "text1", starting from the last one.
-        for row in (0..text1.len()).rev() {
-            // If the corresponding characters for this cell are the same...
-            if text1.chars().nth(row) == text2.chars().nth(col) {
-                // ...increment the length of the longest common subsequence by 1.
-                dp_grid[row][col] = 1 + dp_grid[row + 1][col + 1];
-            // Otherwise they must be different...
-            } else {
-                // ...so take the maximum of the lengths of the longest common subsequences
-                // ending at the next characters in "text1" and "text2".
-                dp_grid[row][col] = i32::max(dp_grid[row + 1][col], dp_grid[row][col + 1]);
+    for i in 0..n {
+        for j in 0..i {
+            if (i <= j + arr[j] as usize) && (jumps[j] != std::i32::MAX) {
+                jumps[i] = min(jumps[i], jumps[j] + 1);
+                break;
             }
         }
     }
 
-    // Return the value stored in "dp_grid[0][0]", which represents the length of the longest common subsequence.
-    dp_grid[0][0]
+    // Return the minimum number of jumps to reach the end of the array
+    return jumps[n - 1];
+}
+
+fn main() {
+    let arr = [1, 3, 6, 1, 0, 9];
+    let min_num_jumps = min_jumps(&arr);
+    println!(
+        "The minimum number of jumps to reach the end of the array is: {}",
+        min_num_jumps
+    );
 }
