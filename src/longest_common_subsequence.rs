@@ -1,10 +1,3 @@
-fn main() {
-    let text1: String = "abc".to_owned();
-    let text2: String = "def".to_owned();
-
-    println!("{}", longest_common_subsequence(text1, text2));
-}
-
 // Dynamic programming approach
 pub fn longest_common_subsequence(text1: String, text2: String) -> i32 {
     // Create a 2D grid called "dp_grid" with `text1.len() + 1` rows and `text2.len() + 1` columns.
