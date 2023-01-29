@@ -1,31 +1,27 @@
-use std::cmp::min;
+use std::cmp::max;
 
-// Function to calculate the minimum number of jumps
-// to reach the end of the array
-fn min_jumps(arr: &[i32]) -> i32 {
-    let n = arr.len();
-    let mut jumps = vec![std::i32::MAX; n]; // Vector to store minimum number of jumps
+fn can_partition(nums: &[i32]) -> bool {
+    let sum: i32 = nums.iter().sum();
+    if sum % 2 != 0 {
+        return false;
+    }
+    let target = sum / 2;
 
-    jumps[0] = 0; // Initialize the minimum number of jumps to reach the first element as 0
+    let n = nums.len();
+    let mut dp = vec![false; (target + 1) as usize];
+    dp[0] = true;
 
-    for i in 0..n {
-        for j in 0..i {
-            if (i <= j + arr[j] as usize) && (jumps[j] != std::i32::MAX) {
-                jumps[i] = min(jumps[i], jumps[j] + 1);
-                break;
-            }
+    for &num in nums {
+        for i in (num..=target).rev() {
+            dp[i as usize] = dp[i as usize] || dp[(i - num) as usize];
         }
     }
 
-    // Return the minimum number of jumps to reach the end of the array
-    return jumps[n - 1];
+    return dp[target as usize];
 }
 
 fn main() {
-    let arr = [1, 3, 6, 1, 0, 9];
-    let min_num_jumps = min_jumps(&arr);
-    println!(
-        "The minimum number of jumps to reach the end of the array is: {}",
-        min_num_jumps
-    );
+    let nums = [1, 5, 11, 5];
+    let result = can_partition(&nums);
+    println!("Can the array be partitioned into two subsets with equal sum: {}", result);
 }
