@@ -1,3 +1,9 @@
+//Longest Increasing Subsequence
+//Dynamic Programming Solution
+//Can also be solved with backtracking but that will result in exponential time.
+//DP approach will result in quadratic time which is better
+
+// This function calculates the length of the longest increasing subsequence in an array of integers.
 pub fn longest_increasing_subsequence(nums: &[i32]) -> i32 {
     // Initialize an array to store the maximum increasing subsequence ending at each index.
     // Fill it with the value 1, representing a single element as the minimum length of a subsequence.
@@ -18,9 +24,4 @@ pub fn longest_increasing_subsequence(nums: &[i32]) -> i32 {
 
     // Return the maximum value in the `dp` array, which represents the length of the longest increasing subsequence.
     *dp.iter().max().unwrap_or(&0)
-}
-fn main() {
-    let nums = [1, 5, 11, 5];
-    let result = longest_increasing_subsequence(&nums);
-    println!("Longest increasing subsequence: {}", result);
 }
